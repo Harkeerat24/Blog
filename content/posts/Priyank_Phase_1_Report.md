@@ -42,7 +42,7 @@ Also wired up `Verilog2CV.js` on the main thread to receive the worker's output 
 
 Getting the WASM module to load correctly inside a worker context had its own set of challenges. The WASI shim that YoWASP uses routes stderr through `console.log`, which was not expected.
 
-{{< video src="/videos/Priyank_Verma/week_1_worker.mp4" type="video/mp4" preload="auto" >}}
+{{< video src="/videos/Priyank_Verma/week-1-worker.mp4" type="video/mp4" preload="auto" >}}
 
 - **PR:** [#1111 -- add client-side Verilog synthesis via YoWASP WASM for offline Tauri desktop](https://github.com/CircuitVerse/cv-frontend-vue/pull/1111)
 
@@ -52,7 +52,7 @@ This was a week of both cleanup and a new safety layer. After the core features 
 
 On top of that, added comprehensive test coverage. The synthesis test suite now includes cases for valid Verilog, syntax errors, empty modules, multiple modules, non-object JSON outputs, timeout scenarios, and various invalid VFS responses. All 168 tests pass.
 
-{{< video src="/videos/Priyank_Verma/week_2_timeout_guard.mp4" type="video/mp4" preload="auto" >}}
+{{< video src="/videos/Priyank_Verma/week-2-timeout-guard.mp4" type="video/mp4" preload="auto" >}}
 
 - **PR:** [#1105 -- add timeout guard for synthesis pipeline](https://github.com/CircuitVerse/cv-frontend-vue/pull/1105)
 
@@ -86,7 +86,7 @@ Second, I went through multiple rounds of mentor review on the error handling PR
 
 Each round of review made the code more robust. I also synced these improvements across all active branches to keep them consistent.
 
-{{< video src="/videos/Priyank_Verma/week_5_worker_lifecycle.mp4" type="video/mp4" preload="auto" >}}
+{{< video src="/videos/Priyank_Verma/week-5-worker-lifecycle.mp4" type="video/mp4" preload="auto" >}}
 
 - **PR:** [#1124 -- worker lifecycle management](https://github.com/CircuitVerse/cv-frontend-vue/pull/1124)
 
