@@ -36,13 +36,14 @@ The **1:1 bonding meet on May 9th** with Harsh, Vivek, and Nihal was warm and fr
 
 ### Week 1 (2 -- 8 Jun): Setting up the Web Worker pipeline
 
-The first week was about getting the foundation right. I set up `synthesisWorker.js` to run YoWASP Yosys inside a dedicated Web Worker, keeping the heavy WASM computation off the main thread so the UI stays responsive. The worker takes Verilog code as input, writes it to the Yosys virtual filesystem as `input.v`, runs the synthesis command, and reads back `output.json`.
+The first week was about getting the foundation right. We set up `synthesisWorker.js` to run YoWASP Yosys inside a dedicated Web Worker, keeping the heavy WASM computation off the main thread so the UI stays responsive. The worker takes Verilog code as input, writes it to the Yosys virtual filesystem as `input.v`, runs the synthesis command, and reads back `output.json`.
 
 Also wired up `Verilog2CV.js` on the main thread to receive the worker's output and convert it into CircuitVerse circuit components using `yosys2digitaljs`.
 
 Getting the WASM module to load correctly inside a worker context had its own set of challenges. The WASI shim that YoWASP uses routes stderr through `console.log`, which was not expected.
 
-{{< video src="/videos/Priyank_Verma/week-1-worker.mp4" type="video/mp4" preload="auto" >}}
+{{< youtube YfINmQvsOXM >}}
+
 
 - **PR:** [#1111 -- add client-side Verilog synthesis via YoWASP WASM for offline Tauri desktop](https://github.com/CircuitVerse/cv-frontend-vue/pull/1111)
 
@@ -52,7 +53,8 @@ This was a week of both cleanup and a new safety layer. After the core features 
 
 On top of that, added comprehensive test coverage. The synthesis test suite now includes cases for valid Verilog, syntax errors, empty modules, multiple modules, non-object JSON outputs, timeout scenarios, and various invalid VFS responses. All 168 tests pass.
 
-{{< video src="/videos/Priyank_Verma/week-2-timeout-guard.mp4" type="video/mp4" preload="auto" >}}
+{{< youtube ZqRVkYmPCz4 >}}
+
 
 - **PR:** [#1105 -- add timeout guard for synthesis pipeline](https://github.com/CircuitVerse/cv-frontend-vue/pull/1105)
 
@@ -60,7 +62,7 @@ On top of that, added comprehensive test coverage. The synthesis test suite now 
 
 A frustrating blocker showed up early. The Yosys virtual filesystem was returning data in a format we did not anticipate. Some outputs came back as `Uint8Array` instead of strings, and in some edge cases, the output file was missing entirely (silent synthesis failures).
 
-I built `vfsGuard.js` to sit between the raw Yosys VFS result and the netlist converter. It validates that `output.json` exists, handles both string and binary responses, catches empty outputs, and verifies that the parsed JSON is actually a netlist object and not something like `null` or a raw number.
+We built `vfsGuard.js` to sit between the raw Yosys VFS result and the netlist converter. It validates that `output.json` exists, handles both string and binary responses, catches empty outputs, and verifies that the parsed JSON is actually a netlist object and not something like `null` or a raw number.
 
 - **PR:** [#1112 -- VFS output validation](https://github.com/CircuitVerse/cv-frontend-vue/pull/1112)
 
@@ -69,26 +71,33 @@ I built `vfsGuard.js` to sit between the raw Yosys VFS result and the netlist co
 
 With synthesis working for valid Verilog, we turned to the error path. When a student writes broken Verilog, Yosys dumps raw compiler output full of internal token names like `TOK_ENDMODULE` and `TOK_POSEDGE`. These are meaningless to someone learning digital design for the first time.
 
-I built `errorParser.js` to intercept the stderr output from Yosys (captured via console overrides in the worker), scan it for error patterns, and transform them into plain English. For example, instead of seeing `syntax error, unexpected TOK_ENDMODULE, expecting TOK_ID`, a student now sees `Syntax error on line 7: unexpected 'endmodule', expected identifier`.
+We built `errorParser.js` to intercept the stderr output from Yosys (captured via console overrides in the worker), scan it for error patterns, and transform them into plain English. For example, instead of seeing `syntax error, unexpected TOK_ENDMODULE, expecting TOK_ID`, a student now sees `Syntax error on line 7: unexpected 'endmodule', expected identifier`.
 
 The parser handles several error categories: missing endmodule statements, unexpected tokens with suggested alternatives, unexpected end-of-file errors, and generic ERROR lines that do not match a known pattern.
 
-{{< video src="/videos/Priyank_Verma/week_4_error_handeling.mp4" type="video/mp4" preload="auto" >}}
+{{< youtube VgC4EuRSOts >}}
+
 
 - **PR:** [#1116 -- Error handling and human-readable messages](https://github.com/CircuitVerse/cv-frontend-vue/pull/1116)
 
 
-### Week 5 (30 Jun -- 6 Jul): Lifecycle management, review cycles, and midterm prep
+### Week 5 (30 Jun -- 6 Jul): Lifecycle management, Reactive Verilog Terminal, review cycles, and midterm prep
 
-Two big things happened this week. First, we tackled **worker lifecycle management**. Every time Yosys runs, its WASM linear memory grows and never shrinks. Over multiple synthesis runs, this accumulates. The only reliable way to reclaim that memory is to terminate the worker entirely and start a fresh one. I built a lifecycle manager that handles graceful teardown after each synthesis run and spawns a clean worker for the next one, keeping memory usage predictable.
+Three big things happened this week. First, we tackled **worker lifecycle management**. Every time Yosys runs, its WASM linear memory grows and never shrinks. Over multiple synthesis runs, this accumulates. The only reliable way to reclaim that memory is to terminate the worker entirely and start a fresh one. We built a lifecycle manager that handles graceful teardown after each synthesis run and spawns a clean worker for the next one, keeping memory usage predictable.
 
-Second, I went through multiple rounds of mentor review on the error handling PR. The feedback was thorough and valuable: the console overrides needed to handle multi-argument calls (since `console.log('input.v:3:', 'ERROR: ...')` would otherwise lose the error message), the `printErr` callback needed consistent `String()` wrapping, and the regex in the error parser needed the `^` anchor removed so it could catch error lines even when the WASI shim adds padding or a prefix.
+Second, I went through multiple rounds of mentor review on the error handling PR. The feedback was thorough and valuable: the console overrides needed to handle multi-argument calls (since `console.log('input.v:3:', 'ERROR: ...')` would otherwise lose the error message), the `printErr` callback needed consistent `String()` wrapping, and the regex in the error parser needed the `^` anchor removed so it could catch error lines even when the WASI shim adds padding or a prefix. Each round of review made the code more robust.
 
-Each round of review made the code more robust. I also synced these improvements across all active branches to keep them consistent.
+{{< youtube Q35KqhNVfhw >}}
 
-{{< video src="/videos/Priyank_Verma/week-5-worker-lifecycle.mp4" type="video/mp4" preload="auto" >}}
 
 - **PR:** [#1124 -- worker lifecycle management](https://github.com/CircuitVerse/cv-frontend-vue/pull/1124)
+
+Third, we introduced a **reactive Verilog terminal** in `/v1`. The old terminal output relied on direct DOM manipulation (`document.getElementById`) and global variables (`window.verilogTerminal`), which bypassed Vue's reactivity entirely. We replaced all of that with two Pinia stores: `synthesisStore` for managing terminal messages, and `verilogStore` for terminal visibility and theme state. A new `VerilogTerminal.vue` component now reactively renders synthesis output, with proper message types (info, error, success), timestamps, and auto-scrolling. This brings the `/v1` codebase in line with the upstream `/src` architecture.
+
+
+{{< youtube BAE0pZqgIHI >}}
+
+- **PR:** [#1126 -- reactive Verilog terminal with Pinia stores](https://github.com/CircuitVerse/cv-frontend-vue/pull/1126)
 
 ---
 
@@ -108,10 +117,11 @@ The synthesis pipeline follows a clean separation between the main thread and th
 |---|---|---|
 | Web Worker synthesis pipeline | [#1111](https://github.com/CircuitVerse/cv-frontend-vue/pull/1111) | Merged |
 | Timeout guard | [#1105](https://github.com/CircuitVerse/cv-frontend-vue/pull/1105) | Merged |
-| VFS output validation (`vfsGuard.js`) | [#1112](https://github.com/CircuitVerse/cv-frontend-vue/pull/1112) | In Review |
-| Human-readable error parsing (`errorParser.js`) | [#1116](https://github.com/CircuitVerse/cv-frontend-vue/pull/1116) | In Review |
-| Worker lifecycle management | [#1124](https://github.com/CircuitVerse/cv-frontend-vue/pull/1124) | In Review |
-| Comprehensive test suite (168 tests) | Included in above PRs | Passing |
+| VFS output validation (`vfsGuard.js`) | [#1112](https://github.com/CircuitVerse/cv-frontend-vue/pull/1112) | Merged |
+| Human-readable error parsing (`errorParser.js`) | [#1116](https://github.com/CircuitVerse/cv-frontend-vue/pull/1116) | Merged |
+| Worker lifecycle management | [#1124](https://github.com/CircuitVerse/cv-frontend-vue/pull/1124) | Merged |
+| Reactive Verilog terminal (Pinia stores) | [#1126](https://github.com/CircuitVerse/cv-frontend-vue/pull/1126) | In Review |
+| Comprehensive test suite (177 tests) | Included in above PRs | Passing |
 
 ---
 
