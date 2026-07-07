@@ -10,7 +10,7 @@ Google Summer of Code 2026 @ CircuitVerse | Computer Science Undergraduate at Aj
 [![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Me-Priyank)
 [![X](https://img.shields.io/badge/Twitter-000000?style=for-the-badge&logo=x&logoColor=white)](https://x.com/priyanktweetss)
 
-#### What I work on
+### What I work on
 
 - 🛠️ Building client-side Verilog synthesis for CircuitVerse using WebAssembly and Web Workers.
 - 🚀 Frontend technologies like Vue.js, TypeScript, and Pinia for state management.
