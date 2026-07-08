@@ -92,7 +92,7 @@ Second, I went through multiple rounds of mentor review on the error handling PR
 
 - **PR:** [#1124 -- worker lifecycle management](https://github.com/CircuitVerse/cv-frontend-vue/pull/1124)
 
-Third, we introduced a **reactive Verilog terminal** in `/v1`. The old terminal output relied on direct DOM manipulation (`document.getElementById`) and global variables (`window.verilogTerminal`), which bypassed Vue's reactivity entirely. We replaced all of that with two Pinia stores: `synthesisStore` for managing terminal messages, and `verilogStore` for terminal visibility and theme state. A new `VerilogTerminal.vue` component now reactively renders synthesis output, with proper message types (info, error, success), timestamps, and auto-scrolling. This brings the `/v1` codebase in line with the upstream `/src` architecture.
+Third, we introduced a **reactive Verilog terminal** in `/v1`(Note that this is part of phase 2, and yes we started that early :) ) . The old terminal output relied on direct DOM manipulation (`document.getElementById`) and global variables (`window.verilogTerminal`), which bypassed Vue's reactivity entirely. We replaced all of that with two Pinia stores: `synthesisStore` for managing terminal messages, and `verilogStore` for terminal visibility and theme state. A new `VerilogTerminal.vue` component now reactively renders synthesis output, with proper message types (info, error, success), timestamps, and auto-scrolling. This brings the `/v1` codebase in line with the upstream `/src` architecture.
 
 
 {{< youtube BAE0pZqgIHI >}}
@@ -120,7 +120,7 @@ The synthesis pipeline follows a clean separation between the main thread and th
 | VFS output validation (`vfsGuard.js`) | [#1112](https://github.com/CircuitVerse/cv-frontend-vue/pull/1112) | Merged |
 | Human-readable error parsing (`errorParser.js`) | [#1116](https://github.com/CircuitVerse/cv-frontend-vue/pull/1116) | Merged |
 | Worker lifecycle management | [#1124](https://github.com/CircuitVerse/cv-frontend-vue/pull/1124) | Merged |
-| Reactive Verilog terminal (Pinia stores) | [#1126](https://github.com/CircuitVerse/cv-frontend-vue/pull/1126) | In Review |
+| Reactive Verilog terminal (Pinia stores) [Phase 2] | [#1126](https://github.com/CircuitVerse/cv-frontend-vue/pull/1126) | In Review |
 | Comprehensive test suite (177 tests) | Included in above PRs | Passing |
 
 ---
