@@ -18,7 +18,7 @@ type: post
 
 CircuitVerse is used by hundreds of thousands of students and educators to design and simulate digital circuits visually. But when it comes to Verilog, the platform had a gap. There was no way to write Verilog code and see the resulting circuit on the canvas without depending on an external server.
 
-**Client-Side Verilog Synthesis** fills that gap. The goal is to run the entire Verilog-to-circuit pipeline inside the browser: parse the code, synthesize it through Yosys (compiled to WebAssembly), convert the netlist, and render it as a circuit. No backend, no network latency, no dependency on server uptime. Just write code and see your circuit.
+**Client-Side Verilog Synthesis** fills that gap. The idea is to move the Verilog synthesis engine from the server to the browser using WebAssembly, so the **Tauri desktop app** can compile circuits fully offline with zero latency. No server, no internet -- just write Verilog and hit synthesize.
 
 ---
 
