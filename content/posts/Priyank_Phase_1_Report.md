@@ -81,7 +81,7 @@ The parser handles several error categories: missing endmodule statements, unexp
 - **PR:** [#1116 -- Error handling and human-readable messages](https://github.com/CircuitVerse/cv-frontend-vue/pull/1116)
 
 
-### Week 5 (30 Jun -- 6 Jul): Lifecycle management, Reactive Verilog Terminal, review cycles, and midterm prep
+### Week 5 (30 Jun -- 6 Jul): Lifecycle management, review cycles, and midterm prep
 
 Three big things happened this week. First, we tackled **worker lifecycle management**. Every time Yosys runs, its WASM linear memory grows and never shrinks. Over multiple synthesis runs, this accumulates. The only reliable way to reclaim that memory is to terminate the worker entirely and start a fresh one. We built a lifecycle manager that handles graceful teardown after each synthesis run and spawns a clean worker for the next one, keeping memory usage predictable.
 
@@ -91,13 +91,6 @@ Second, I went through multiple rounds of mentor review on the error handling PR
 
 
 - **PR:** [#1124 -- worker lifecycle management](https://github.com/CircuitVerse/cv-frontend-vue/pull/1124)
-
-Third, we introduced a **reactive Verilog terminal** in `/v1`(Note that this is part of phase 2, and yes we started that early :) ) . The old terminal output relied on direct DOM manipulation (`document.getElementById`) and global variables (`window.verilogTerminal`), which bypassed Vue's reactivity entirely. We replaced all of that with two Pinia stores: `synthesisStore` for managing terminal messages, and `verilogStore` for terminal visibility and theme state. A new `VerilogTerminal.vue` component now reactively renders synthesis output, with proper message types (info, error, success), timestamps, and auto-scrolling. This brings the `/v1` codebase in line with the upstream `/src` architecture.
-
-
-{{< youtube BAE0pZqgIHI >}}
-
-- **PR:** [#1126 -- reactive Verilog terminal with Pinia stores](https://github.com/CircuitVerse/cv-frontend-vue/pull/1126)
 
 ---
 
@@ -120,7 +113,6 @@ The synthesis pipeline follows a clean separation between the main thread and th
 | VFS output validation (`vfsGuard.js`) | [#1112](https://github.com/CircuitVerse/cv-frontend-vue/pull/1112) | Merged |
 | Human-readable error parsing (`errorParser.js`) | [#1116](https://github.com/CircuitVerse/cv-frontend-vue/pull/1116) | Merged |
 | Worker lifecycle management | [#1124](https://github.com/CircuitVerse/cv-frontend-vue/pull/1124) | Merged |
-| Reactive Verilog terminal (Pinia stores) [Phase 2] | [#1126](https://github.com/CircuitVerse/cv-frontend-vue/pull/1126) | In Review |
 | Comprehensive test suite (177 tests) | Included in above PRs | Passing |
 
 ---
@@ -152,7 +144,7 @@ The second half of GSoC will focus on hardening the pipeline, building confidenc
 
 This work reflects the support of the **CircuitVerse community**:
 
-**[Vivek Kumar](https://github.com/vivek-kumar85)**, **[Harsh Rao](https://github.com/HarshRao2004)**, and **[Nihal](https://github.com/Nihal4777)**, my mentors, provided consistent guidance, detailed code reviews, and the kind of patience that makes all the difference. Not once did they make me feel like I was asking a dumb question.
+**[Vivek Kumar](https://github.com/092vk)**, **[Harsh Rao](https://github.com/ThatDeparted2061)**, and **[Nihal](https://github.com/Nihal4777)**, my mentors, provided consistent guidance, detailed code reviews, and the kind of patience that makes all the difference. Not once did they make me feel like I was asking a dumb question.
 
 **[Vedant Jain](https://github.com/vedant-jain03)** and **[Aboobacker MK](https://github.com/tachyons)** as org admins set the tone from day one, making it clear this community is about growing together.
 
