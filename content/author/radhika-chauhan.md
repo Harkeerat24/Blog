@@ -1,6 +1,5 @@
 +++
 title = "Radhika Chauhan"
-image = "images/authors/radhika.jpg"
 description = "Open Source Contributor | Full Stack Developer | Agentic AI "
 +++
 
