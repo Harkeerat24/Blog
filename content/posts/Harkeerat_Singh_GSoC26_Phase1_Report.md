@@ -117,8 +117,8 @@ This video showcases all the progress made during the first phase of the project
 | [#1093](https://github.com/CircuitVerse/cv-frontend-vue/pull/1093) | gsoc26: Implementing canonical pipeline for deterministic json | Closed — superseded by [#1095](https://github.com/CircuitVerse/cv-frontend-vue/pull/1095) |
 | [#1094](https://github.com/CircuitVerse/cv-frontend-vue/pull/1094) | gsoc26: multi circuit support in canonical.ts | Closed — superseded by [#1095](https://github.com/CircuitVerse/cv-frontend-vue/pull/1095) |
 | [#1095](https://github.com/CircuitVerse/cv-frontend-vue/pull/1095) | feat: added subcircuit support in canonical.ts using khans algorithm | **Merged** |
-| [#1131](https://github.com/CircuitVerse/cv-frontend-vue/pull/1131) | feat: add canonical JSON import pipeline with round-trip verification | Open — in review |
-| [#1132](https://github.com/CircuitVerse/cv-frontend-vue/pull/1132) | feat: update Export Project dialog and import project for canonical support | Open — in review |
+| [#1131](https://github.com/CircuitVerse/cv-frontend-vue/pull/1131) | feat: add canonical JSON import pipeline with round-trip verification | Closed — superseded by [#1132](https://github.com/CircuitVerse/cv-frontend-vue/pull/1132) |
+| [#1132](https://github.com/CircuitVerse/cv-frontend-vue/pull/1132) | feat: update Export Project dialog and import project for canonical support | **Merged** |
 | — | JSON Schema and validation | In Progress |
 | — | Writing tests | In Progress |
 
